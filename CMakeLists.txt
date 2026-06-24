@@ -33,8 +33,7 @@ option(BUILD_GUI "Build GUI" ON)
 option(BUILD_BENCH "Build benchmark" ON)
 option(HIDE_CONSOLE "Hide console when running GUI on Windows" ON)
 option(BUNDLE "Enable distribution bundle" OFF)
-set(ARCH_OPT "native" CACHE STRING "Specify instruction set to use. Will be passed directly as `-march` or `/arch:` argument on supported compilers. \
-                                   'native' option will figure out host machine compatibilities and set flags accordingly (even with MSVC).")
+option(USE_NATIVE_COMPILER_FLAG "Make the compiler optimize the build for the microarchitecture" ON)
 option(ENABLE_QT6 "Build with Qt6 rather than Qt5" OFF)
 option(ENABLE_PROFILER "Enable runtime profiler" OFF)
 if(UNIX AND NOT ANDROID)
@@ -45,6 +44,11 @@ endif()
 option(ENABLE_LIBUNWIND "Use libunwind for stack traces in exception handlers" ${DEFAULT_ENABLE_LIBUNWIND})
 set(VKFFT_BACKEND 1 CACHE STRING "vkFFT Backend: 0 - Vulkan, 1 - CUDA")
 option(BUILD_SHARED_LIBS "Build using shared libraries" ON)
+
+if(USE_NATIVE_COMPILER_FLAG)
+    set(ARCH_OPT "native" CACHE STRING "Specify instruction set to use. Will be passed directly as `-march` or `/arch:` argument on supported compilers. \
+                                       'native' option will figure out host machine compatibilities and set flags accordingly (even with MSVC).")
+endif()
 
 set(HAVE_LIBUNWIND OFF)
 if(ENABLE_LIBUNWIND AND UNIX AND NOT ANDROID)
